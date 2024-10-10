@@ -1,0 +1,12 @@
+Invoke-RestMethod -Uri http://127.0.0.1:8000/predict_diabetes/ -Method POST -ContentType "application/json" -Body '{
+    "feature1": 1,
+    "feature2": 1,
+    "feature3": 1,
+    "feature4": 1,
+    "feature5": 1,
+    "feature6": 1,
+    "feature7": -0.043400846128719,
+    "feature8": -0.00259226199818282,
+    "feature9": 0.0199074893129092,
+    "feature10": -0.017646125159806
+}'
