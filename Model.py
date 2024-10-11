@@ -1,39 +1,25 @@
-# Import کتابخانه‌ها
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 
 # بارگذاری دیتاست دیابت
-diabetes_data = load_diabetes()
+data = load_diabetes()
+X = data.data
+y = (data.target > 150).astype(int)  # تبدیل هدف به دسته‌های باینری
 
-# جدا کردن ویژگی‌ها و برچسب‌ها (Features و Labels)
-X = diabetes_data.data
-y = diabetes_data.target
-
-# نرمال‌سازی برچسب‌ها به اعداد باینری (اختیاری: مثلا بیماری یا سالم)
-# به دلیل اینکه target مقادیر پیوسته دارد، باید آن را به طبقه‌بندی تبدیل کنیم.
-y = (y > y.mean()).astype(int)  # اگر مقدار بالاتر از میانگین باشد 1، در غیر این صورت 0
-
-# تقسیم داده‌ها به دو مجموعه آموزشی و آزمایشی
+# تقسیم داده‌ها به داده‌های آموزشی و تست
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# انتخاب و آموزش مدل (در اینجا Logistic Regression)
-model = LogisticRegression(max_iter=10000)
-# یا به جای LogisticRegression می‌توانید RandomForestClassifier را امتحان کنید:
-# model = RandomForestClassifier(n_estimators=100, random_state=42)
-
+# ساخت مدل
+model = LogisticRegression(max_iter=1000)
 model.fit(X_train, y_train)
 
-# پیش‌بینی روی مجموعه آزمایشی
+# ارزیابی مدل
 y_pred = model.predict(X_test)
-
-# ارزیابی دقت مدل
 accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy of the model: {accuracy:.4f}")
+print(f"Accuracy: {accuracy * 100:.2f}%")
 
-# ذخیره مدل با استفاده از joblib
-joblib.dump(model, 'diabetes_model.pkl')
-print("Model saved as 'diabetes_model.pkl'")
+# ذخیره مدل
+joblib.dump(model, "diabetes_model.pkl")
